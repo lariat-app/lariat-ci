@@ -13,4 +13,4 @@ jobs:
     - name: Repository Dispatch
       uses: peter-evans/repository-dispatch@v4
       with:
-        event-type: trigger-ci
+        event-type: build
