@@ -37,4 +37,8 @@ jobs:
         path: lariat-dev
         ref: 'master'
 
+    - name: Build and test
+      run: |
+        cd lariat-dev
+        cmake -S . -B build -DVCPKG_ROOT=${{ github.workspace }}/vcpkg
     
