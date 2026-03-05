@@ -1,6 +1,8 @@
 name: Lariat CI/CD
 
 on:
+  workflow_dispatch:
+
   repository_dispatch:
     types: [build]
 
@@ -20,7 +22,7 @@ jobs:
         oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
         tags: tag:ci
     
-    - name: Checkout code
+    - name: Checkout vcpkg
       uses: actions/checkout@v4
       with:
         repository: microsoft/vcpkg
