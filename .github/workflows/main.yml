@@ -2,6 +2,7 @@ name: Lariat CI/CD
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   build:
