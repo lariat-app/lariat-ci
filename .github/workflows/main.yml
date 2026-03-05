@@ -8,10 +8,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env: 
+      VCPKG_BINARY_SOURCES: >-
+        clear;http,http://${{secrets.TS_IPV4}}:23456,readwrite
+  
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          repository: lariat-app/lariat-dev
-          token: ${{ secrets.LARIAT_CI }}
-          ref: 'master'
+    - name: Tailscale connect
+      uses: tailscale/github-action@v4
+      with:
+        oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+        oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+        tags: tag:ci
+    
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        repository: microsoft/vcpkg
+        path: vcpkg
+        ref: '2026.01.16'  
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        repository: lariat-app/lariat-dev
+        token: ${{ secrets.LARIAT_CI }}
+        path: lariat-dev
+        ref: 'master'
+
+    
