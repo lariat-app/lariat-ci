@@ -1,0 +1,18 @@
+name: Lariat CI/CD
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Checkout project
+        uses: actions/checkout@v2
+        with:
+          repository: lariat-app/lariat-dev
+          token: ${{ secrets.GITHUB_TOKEN }}
