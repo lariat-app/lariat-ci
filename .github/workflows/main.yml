@@ -1,7 +1,9 @@
 name: Lariat CI/CD
 
 on:
+  workflow_dispatch:
   push:
+    branches: ['**']
 
 jobs:
   build:
