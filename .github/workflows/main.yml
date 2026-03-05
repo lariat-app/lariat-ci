@@ -1,9 +1,8 @@
 name: Lariat CI/CD
 
 on:
-  workflow_dispatch:
-  push:
-    branches: ['**']
+  repository_dispatch:
+    types: [trigger-ci]
 
 jobs:
   build:
