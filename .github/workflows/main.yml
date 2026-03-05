@@ -12,9 +12,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Checkout project
-        uses: actions/checkout@v4
         with:
           repository: lariat-app/lariat-dev
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: 'master'
