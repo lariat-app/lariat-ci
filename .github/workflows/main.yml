@@ -1,0 +1,17 @@
+name: Lariat CI/CD
+
+on:
+  repository_dispatch:
+    types: [build]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          repository: lariat-app/lariat-dev
+          token: ${{ secrets.LARIAT_CI }}
+          ref: 'master'
