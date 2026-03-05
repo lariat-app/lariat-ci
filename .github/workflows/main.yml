@@ -2,7 +2,7 @@ name: Lariat CI/CD
 
 on:
   repository_dispatch:
-    types: [trigger-ci]
+    types: [build]
 
 jobs:
   build:
