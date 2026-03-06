@@ -25,6 +25,12 @@ jobs:
         oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
         tags: tag:ci
     
+    - name: Ubuntu packages
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y autoconf autoconf-archive automake libtool
+
     - name: Checkout vcpkg
       uses: actions/checkout@v4
       with:
