@@ -38,7 +38,7 @@ jobs:
         repository: lariat-app/lariat-dev
         token: ${{ secrets.LARIAT_CI }}
         path: lariat-dev
-        ref: 'master'
+        ref: ${{ github.event.client_payload.ref || 'master' }}
 
     - name: Build and test
       run: |
