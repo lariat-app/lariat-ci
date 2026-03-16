@@ -15,7 +15,8 @@ jobs:
 
     env: 
       VCPKG_BINARY_SOURCES: >-
-        clear;http,http://${{secrets.TS_IPV4}}:12345,readwrite
+        clear;http,http://${{secrets.TS_IPV4}}:12345/vcpkg-cache,readwrite
+      CEF_URL: http://${{secrets.TS_IPV4}}:12345
   
     steps:
     - name: Tailscale connect
