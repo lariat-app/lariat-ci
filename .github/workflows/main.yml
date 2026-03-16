@@ -48,7 +48,9 @@ jobs:
         ref: ${{ github.event.client_payload.ref || 'master' }}
 
     - name: Build and test
+      env:
+        VCPKG_DEBUG: "true"
       run: |
         cd lariat-dev
-        cmake -S . -B build -DVCPKG_ROOT=${{ github.workspace }}/vcpkg --vcpkg-debug
+        cmake -S . -B build -DVCPKG_ROOT=${{ github.workspace }}/vcpkg
     
