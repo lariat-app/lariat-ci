@@ -60,4 +60,4 @@ jobs:
           token: ${{ secrets.LARIAT_TRIGGER }}
           repository: lariat-app/lariat-dev
           event-type: deploy
-          client-payload: '{"ref": "${{ github.ref }}"}'
+          client-payload: '{"ref": "${{ github.event.client_payload.ref }}"}'
