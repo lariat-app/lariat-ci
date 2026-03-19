@@ -43,10 +43,46 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
+
+    env: 
+      VCPKG_BINARY_SOURCES: >-
+        clear;http,http://${{secrets.TS_IPV4}}:12345/vcpkg-cache,readwrite
+      CEF_URL: http://${{secrets.TS_IPV4}}:12345
+  
     steps:
-      - name: Build and deploy
-        run: |
-          echo "Building apps on ${{ matrix.os }}..."
+    - name: Tailscale connect
+      uses: tailscale/github-action@v4
+      with:
+        oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+        oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+        tags: tag:ci
+    
+    - name: Ubuntu packages
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y autoconf autoconf-archive automake libtool libltdl-dev libx11-dev libxft-dev libxext-dev libgles2-mesa-dev libxi-dev libxtst-dev libxrandr-dev
+
+    - name: Checkout vcpkg
+      uses: actions/checkout@v4
+      with:
+        repository: microsoft/vcpkg
+        path: vcpkg
+        ref: '2026.01.16'  
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        repository: lariat-app/lariat-dev
+        token: ${{ secrets.LARIAT_CI }}
+        path: lariat-dev
+        ref: ${{ github.event.client_payload.ref || 'master' }}
+
+    - name: Build
+      run: |
+        cd lariat-dev
+        cmake -S . -B build -DVCPKG_ROOT=${{ github.workspace }}/vcpkg -DBUILD_APPS=ON
+        cmake --build build -j 8
 
   cloud:
     if: github.event.action == 'dispatch_pull_request' || github.event.inputs.dispatch_type == 'dispatch_pull_request'
