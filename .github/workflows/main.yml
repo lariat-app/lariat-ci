@@ -3,10 +3,6 @@ name: Lariat CI/CD
 on:
   workflow_dispatch:
     inputs:
-      ref:
-        description: 'Git reference to build (branch, tag, or commit SHA)'
-        required: false
-        default: 'master'
       dispatch_type:
         description: 'The type of dispatch event to simulate'
         type: choice
@@ -29,7 +25,7 @@ jobs:
       with:
         repository: lariat-app/lariat-dev
         token: ${{ secrets.LARIAT_CI }}
-        ref: ${{ github.event.inputs.ref || github.event.client_payload.ref || 'master' }}
+        ref: ${{ github.event.client_payload.ref || 'master' }}
 
     - name: CMake Build
       run: |
