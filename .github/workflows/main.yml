@@ -18,7 +18,13 @@ jobs:
     - name: CMake Build
       run: |
         cmake -S . -B /home/ubuntu/build_test -DBUILD_TEST=ON -DVCPKG_ROOT=/home/ubuntu/vcpkg
-        cmake --build /home/ubuntu/build_test -j4
+        cd /home/ubuntu/build_test
+        make -j4
+        
+    - name: Run tests
+      run: |
+        make test
+        cd -
 
   apps:
     if: github.event.action == 'dispatch_pull_request' || github.event.action == 'dispatch_merge'
