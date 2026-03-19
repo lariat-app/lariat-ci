@@ -18,11 +18,12 @@ jobs:
     - name: CMake Build
       run: |
         cmake -S . -B /home/ubuntu/build_test -DBUILD_TEST=ON -DVCPKG_ROOT=/home/ubuntu/vcpkg
-        cd /home/ubuntu/build_test
-        make -j4
+        cmake --build /home/ubuntu/build_test -j 8
+        
         
     - name: Run tests
       run: |
+        cd /home/ubuntu/build_test
         make test
         cd -
 
