@@ -8,9 +8,17 @@ jobs:
   test:
     runs-on: self-hosted
     steps:
-      - name: Run tests
-        run: |
-          echo "Running tests..."
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        repository: lariat-app/lariat-dev
+        token: ${{ secrets.LARIAT_CI }}
+        ref: ${{ github.event.client_payload.ref || 'master' }}
+
+    - name: CMake Build
+      run: |
+        cmake -S . -B /home/ubuntu/build_test -DBUILD_TEST=ON -DVCPKG_ROOT=/home/ubuntu/vcpkg
+        cmake --build /home/ubuntu/build_test -j4
 
   apps:
     if: github.event.action == 'dispatch_pull_request' || github.event.action == 'dispatch_merge'
