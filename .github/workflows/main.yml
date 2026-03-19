@@ -13,7 +13,7 @@ jobs:
           echo "Running tests..."
 
   apps:
-    if: github.event.action == 'dispatch_push' || github.event.action == 'dispatch_merge'
+    if: github.event.action == 'dispatch_pull_request' || github.event.action == 'dispatch_merge'
     needs: test
     runs-on: ${{ matrix.os }}
     strategy:
