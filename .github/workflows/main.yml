@@ -1,6 +1,18 @@
 name: Lariat CI/CD
 
 on:
+  workflow_dispatch:
+    inputs:
+      dispatch_type:
+        description: 'The type of dispatch event to simulate'
+        type: choice
+        required: true
+        default: 'dispatch_push'
+        options:
+          - dispatch_push
+          - dispatch_pull_request
+          - dispatch_merge
+
   repository_dispatch:
     types: [dispatch_push, dispatch_pull_request, dispatch_merge]
 
@@ -25,7 +37,7 @@ jobs:
         ctest --test-dir /home/ubuntu/build_test
 
   apps:
-    if: github.event.action == 'dispatch_pull_request' || github.event.action == 'dispatch_merge'
+    if: github.event.action == 'dispatch_pull_request' || github.event.action == 'dispatch_merge' || github.event.inputs.dispatch_type == 'dispatch_pull_request' || github.event.inputs.dispatch_type == 'dispatch_merge'
     needs: test
     runs-on: ${{ matrix.os }}
     strategy:
@@ -37,7 +49,7 @@ jobs:
           echo "Building apps on ${{ matrix.os }}..."
 
   deploy:
-    if: github.event.action == 'dispatch_merge'
+    if: github.event.action == 'dispatch_merge' || github.event.inputs.dispatch_type == 'dispatch_merge'
     needs: apps
     runs-on: self-hosted
     steps:
