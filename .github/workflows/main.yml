@@ -48,11 +48,30 @@ jobs:
         run: |
           echo "Building apps on ${{ matrix.os }}..."
 
-  deploy:
+  cloud:
+    if: github.event.action == 'dispatch_pull_request' || github.event.inputs.dispatch_type == 'dispatch_pull_request'
+    needs: test
+    runs-on: self-hosted
+    steps:
+      - name: Deploy to cloud
+        run: |
+          echo "Deploying to cloud..."
+
+
+  publish:
     if: github.event.action == 'dispatch_merge' || github.event.inputs.dispatch_type == 'dispatch_merge'
     needs: apps
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish to package registry
+        run: |
+          echo "Publishing artifacts"
+
+  deploy:
+    if: github.event.action == 'dispatch_merge' || github.event.inputs.dispatch_type == 'dispatch_merge'
+    needs: cloud
     runs-on: self-hosted
     steps:
       - name: Deploy to production
         run: |
-          echo "Deploying to production..."
+          echo "Deploying to production"
